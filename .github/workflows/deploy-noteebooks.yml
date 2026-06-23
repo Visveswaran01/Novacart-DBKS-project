@@ -1,0 +1,51 @@
+name: Deploying Notbooks YAML
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Notebooks/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: Prod
+
+    steps:
+    
+      - name: Checkout code
+        uses: actions/checkout@v7
+      
+      - name: List files After checkout
+        run: ls -la
+
+      - name: Install Python version 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify Python version
+        run: python --version
+
+      - name: Install Databricks CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+
+      - name: Verify Databricks CLI
+        run: databricks version
+
+      - name: Create Databricks configuration profile file instead of CLI Command
+        run: |
+          echo "[DEFAULT]" > ~/.databrickscfg
+          echo "host = ${{ secrets.DATABRICKS_PROD_HOST }}" >> ~/.databrickscfg
+          echo "token = ${{ secrets.DATABRICKS_PROD_PAT }}" >> ~/.databrickscfg
+      
+      - name: View Databricks config file
+        run: |
+          cat ~/.databrickscfg
+
+      - name: Deploy the notebook from local to Prod Workspace
+        run: |
+          databricks workspace import-dir Notebooks/ /Workspace/Shared/Prod_Notebooks --overwrite
+
