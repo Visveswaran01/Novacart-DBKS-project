@@ -45,3 +45,7 @@ jobs:
         run: |
           cat ~/.databrickscfg
 
+      - name: Deploy the notebook from local to Prod Workspace
+        run: |
+          databricks workspace import-dir Notebooks/ /Workspace/Shared/Prod_Notebooks --overwrite
+
