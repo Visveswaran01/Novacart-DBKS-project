@@ -37,7 +37,7 @@ jobs:
 
       - name: Create Databricks configuration profile file instead of CLI Command
         run: |
-          echo "[prod]" > ~/.databrickscfg
+          echo "[DEFAULT]" > ~/.databrickscfg
           echo "host = ${{ secrets.DATABRICKS_PROD_HOST }}" >> ~/.databrickscfg
           echo "token = ${{ secrets.DATABRICKS_PROD_PAT }}" >> ~/.databrickscfg
       
