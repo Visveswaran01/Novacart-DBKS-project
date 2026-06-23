@@ -37,3 +37,8 @@ jobs:
           echo "[prod]" > ~/.databrickscfg
           echo "host = ${{ secrets.DATABRICKS_PROD_HOST }}" >> ~/.databrickscfg
           echo "token = ${{ secrets.DATABRICKS_PROD_PAT }}" >> ~/.databrickscfg
+      
+      - name: View Databricks config file
+        run: |
+          cat ~/.databrickscfg
+
