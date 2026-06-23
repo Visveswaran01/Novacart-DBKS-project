@@ -1,4 +1,4 @@
-name: File Listing
+name: Deploying Notbooks YAML
 
 on:
   push:
@@ -10,11 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: List files before checkout
-        run: ls -la
-
+    
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: List files after checkout
+      
+      - name: List files After checkout
         run: ls -la
+
+      - name: Install Python version 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify Python version
+        run: python --version
+
+      - name: Install Databricks CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+
+      - name: Verify Databricks CLI
+        run: databricks version
